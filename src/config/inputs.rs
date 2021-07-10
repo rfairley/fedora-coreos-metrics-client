@@ -1,6 +1,5 @@
 //! Configuration input (reading snippets from filesystem and merging).
 /// Modified source from zincati: https://github.com/coreos/zincati/blob/60f3a9144b34ebfa7f7a0fe98f8d641a760ee8f0/src/config/inputs.rs.
-
 use crate::config::fragments;
 
 use failure::{bail, ResultExt};
@@ -15,15 +14,11 @@ pub(crate) struct ConfigInput {
 
 impl ConfigInput {
     /// Read config fragments and merge them into a single config.
-    pub(crate) fn read_configs(
-        dirs: Vec<String>,
-        app_name: &str
-    ) -> failure::Fallible<Self> {
+    pub(crate) fn read_configs(dirs: Vec<String>, app_name: &str) -> failure::Fallible<Self> {
         let common_path = format!("{}/config.d", app_name);
-        let extensions = vec![
-            String::from("toml"),
-        ];
-        let od_cfg = liboverdrop::FragmentScanner::new(dirs, common_path.as_str(), true, extensions);
+        let extensions = vec![String::from("toml")];
+        let od_cfg =
+            liboverdrop::FragmentScanner::new(dirs, common_path.as_str(), true, extensions);
 
         let fragments = od_cfg.scan();
 
@@ -36,7 +31,7 @@ impl ConfigInput {
 
     /// Merge multiple fragments into a single configuration.
     fn merge_fragments(
-        fragments: collections::BTreeMap<String, path::PathBuf>
+        fragments: collections::BTreeMap<String, path::PathBuf>,
     ) -> failure::Fallible<Self> {
         use std::io::Read;
 
@@ -70,9 +65,7 @@ impl ConfigInput {
         Ok(cfg)
     }
 
-    fn validate_input(
-        &self
-    ) -> failure::Fallible<()> {
+    fn validate_input(&self) -> failure::Fallible<()> {
         if self.reporting.enabled == None {
             bail!("Required configuration key `reporting.enabled` not specified.");
         }
@@ -112,9 +105,7 @@ pub(crate) struct ReportingInput {
 impl ReportingInput {
     /// Convert fragments into input config for reporting group.
     fn from_fragments(fragments: Vec<fragments::ReportingFragment>) -> Self {
-        let mut cfg = Self {
-            enabled: None,
-        };
+        let mut cfg = Self { enabled: None };
 
         for snip in fragments {
             /* Option is directly passed so that the setting being given

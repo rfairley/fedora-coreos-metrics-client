@@ -20,8 +20,15 @@ env_logger = "^0.7.1"
 failure = "^0.1.5"
 liboverdrop = "^0.0.2"
 log = "^0.4.6"
+maplit = "^1.0"
 serde = { version = "^1.0.91", features = ["derive"] }
+serde_json = "1.0.40"
+slog-scope = "~4.1"
+tempfile = "3.1.0"
 toml = "^0.5.1"
+reqwest = "0.9.22"
+bincode = "1.2.0"
+nix = "0.15.0"
 
 [package.metadata.release]
 sign-commit = true
@@ -32,3 +39,10 @@ pre-release-commit-message = "cargo: Fedora CoreOS Pinger release {{version}}"
 pro-release-commit-message = "cargo: development version bump"
 tag-message = "Fedora CoreOS Pinger v{{version}}"
 tag-prefix = "v"
+
+[dependencies.slog]
+version = "2.5"
+features = ["max_level_trace", "release_max_level_info"]
+
+[dev-dependencies]
+mockito = "^0.17.1"

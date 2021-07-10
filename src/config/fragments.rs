@@ -24,17 +24,25 @@ pub(crate) struct ReportingFragment {
 }
 
 #[cfg(test)]
+pub(crate) fn mock_config() -> ConfigFragment {
+    use std::io::Read;
+
+    let fp =
+        std::fs::File::open("tests/minimal/fedora-coreos-pinger/config.d/10-default-enable.toml")
+            .unwrap();
+    let mut bufrd = std::io::BufReader::new(fp);
+    let mut content = vec![];
+    bufrd.read_to_end(&mut content).unwrap();
+    toml::from_slice(&content).unwrap()
+}
+
+#[cfg(test)]
 mod tests {
     use super::*;
-    use std::io::Read;
 
     #[test]
     fn basic_dist_config_default() {
-        let fp = std::fs::File::open("dist/config.d/10-default-enable.toml").unwrap();
-        let mut bufrd = std::io::BufReader::new(fp);
-        let mut content = vec![];
-        bufrd.read_to_end(&mut content).unwrap();
-        let cfg: ConfigFragment = toml::from_slice(&content).unwrap();
+        let cfg: ConfigFragment = mock_config();
 
         let expected = ConfigFragment {
             collecting: Some(CollectingFragment {

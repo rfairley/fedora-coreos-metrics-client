@@ -1,0 +1,9 @@
+# fedora-coreos-pinger default configuration
+
+[collecting]
+# Default collecting.level is `minimal`. May be set to `"minimal"` or `"full"`.
+level = "full"
+
+[reporting]
+# Required. May be set to `true` or `false`.
+enabled = true
